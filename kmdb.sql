@@ -111,14 +111,100 @@
 .headers off
 
 -- Drop existing tables, so you'll start fresh each time this script is run.
--- TODO!
+-- Drop existing tables, start fresh with each run of this script
+DROP TABLE IF EXISTS movie;
+DROP TABLE IF EXISTS studio;
+DROP TABLE IF EXISTS actor;
+DROP TABLE IF EXISTS character;
+DROP TABLE IF EXISTS movie_cast;
 
 -- Create new tables, according to your domain model
--- TODO!
+CREATE TABLE movie (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT, 
+    year INT,
+    rating INT,
+    studio_id TEXT
+);
+
+CREATE TABLE studio (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    studio_name TEXT
+);
+
+CREATE TABLE actor (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    actor_name TEXT 
+);
+
+CREATE TABLE character (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    character_name TEXT 
+);
+
+CREATE TABLE movie_cast (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    movie_id INT,
+    actor_id INT, 
+    character_id TEXT
+);
 
 -- Insert data into your database that reflects the sample data shown above
 -- Use hard-coded foreign key IDs when necessary
--- TODO!
+INSERT INTO movie (title, year, rating, studio_id)
+VALUES 
+    ("Batman Begins", "2005", "PG-13", "1"),
+    ("The Dark Knight", "2008", "PG-13", "1"),
+    ("The Dark Knight Rises", "2012", "PG-13", "1");  
+
+INSERT INTO studio (studio_name)
+VALUES 
+    ("Warner Bros.");
+
+INSERT INTO actor (actor_name)
+VALUES
+    ("Christian Bale"), 
+    ("Michael Caine"), 
+    ("Liam Neeson"),
+    ("Katie Holmes"), 
+    ("Gary Oldman"), 
+    ("Heath Ledger"), 
+    ("Aaron Eckhart"),
+    ("Maggie Gyllenhaal"), 
+    ("Tom Hardy"), 
+    ("Joseph Gordon-Levitt"), 
+    ("Anne Hathaway");
+
+INSERT INTO character (character_name)
+VALUES 
+    ("Bruce Wayne"), 
+    ("Alfred"), 
+    ("Ra's Al Ghul"), 
+    ("Rachel Dawes"), 
+    ("Commissioner Gordon"),
+    ("Joker"),
+    ("Harvey Dent"),
+    ("Bane"),
+    ("John Blake"),
+    ("Selina Kyle");
+
+INSERT INTO movie_cast (movie_id, actor_id, character_id)
+VALUES
+    ("1", "1", "1"),
+    ("1", "2", "2"),
+    ("1", "3", "3"),
+    ("1", "4", "4"),
+    ("1", "5", "5"),
+    ("2", "1", "1"),
+    ("2", "6", "6"),
+    ("2", "7", "7"),
+    ("2", "2", "2"),
+    ("2", "8", "4"),
+    ("3", "1", "1"),
+    ("3", "5", "5"),
+    ("3", "9", "8"),
+    ("3", "10", "9"),
+    ("3", "11", "10");
 
 -- Prints a header for the movies output
 .print "Movies"
@@ -126,7 +212,8 @@
 .print ""
 
 -- The SQL statement for the movies output
--- TODO!
+SELECT movie.title, movie.year, movie.rating, studio.studio_name FROM movie
+INNER JOIN studio ON movie.studio_id = studio.id;
 
 -- Prints a header for the cast output
 .print ""
@@ -134,6 +221,19 @@
 .print "========"
 .print ""
 
-
 -- The SQL statement for the cast output
--- TODO!
+SELECT movie.title, actor.actor_name, character.character_name FROM movie
+INNER JOIN movie_cast ON movie.id = movie_cast.movie_id
+INNER JOIN character ON character.id = movie_cast.character_id
+INNER JOIN actor ON actor.id = movie_cast.actor_id;
+
+
+-- - As a guest, I want to see the movies which a single studio has produced.
+-- SELECT studio.studio_name, movie.title FROM movie
+-- INNER JOIN studio ON studio.id = movie.studio_id;
+
+-- - As a guest, I want to see the movies which a single actor has acted in.
+-- SELECT actor.actor_name, movie.title FROM movie_cast
+-- INNER JOIN movie ON movie.id = movie_cast.movie_id
+-- INNER JOIN actor ON actor.id = movie_cast.actor_id
+-- WHERE actor.actor_name = "Christian Bale";

@@ -227,7 +227,6 @@ INNER JOIN movie_cast ON movie.id = movie_cast.movie_id
 INNER JOIN character ON character.id = movie_cast.character_id
 INNER JOIN actor ON actor.id = movie_cast.actor_id;
 
-
 -- - As a guest, I want to see the movies which a single studio has produced.
 -- SELECT studio.studio_name, movie.title FROM movie
 -- INNER JOIN studio ON studio.id = movie.studio_id;
@@ -236,4 +235,4 @@ INNER JOIN actor ON actor.id = movie_cast.actor_id;
 -- SELECT actor.actor_name, movie.title FROM movie_cast
 -- INNER JOIN movie ON movie.id = movie_cast.movie_id
 -- INNER JOIN actor ON actor.id = movie_cast.actor_id
--- WHERE actor.actor_name = "Christian Bale";
+-- WHERE actor.actor_name = "Gary Oldman";
